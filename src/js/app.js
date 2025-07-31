@@ -30,7 +30,7 @@ window.addEventListener("load",async ()=>{
     BTN_CANCEL_POST = document.querySelector('#btn-post-cancel');
     BTN_CANCEL_POST.addEventListener('click', closePostModal);
     if(navigator.serviceWorker){
-        const res= await navigator.serviceWorker.register("/sw.js")
+        const res= await navigator.serviceWorker.register("../sw.js")
         if(res){
             console.log("Service Worker registrado correctamente")
         }else{
