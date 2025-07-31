@@ -22,11 +22,19 @@ const closePostModal=()=>{
 }
 
 
-window.addEventListener("load", ()=>{
+window.addEventListener("load",async ()=>{
     MAIN = document.querySelector('#main');
     MODAL_POST = document.querySelector('#modal-post-section');
     BTN_SHOW_POST = document.querySelector('#btn-show-modal');
     BTN_SHOW_POST.addEventListener('click', showPostModal);
     BTN_CANCEL_POST = document.querySelector('#btn-post-cancel');
     BTN_CANCEL_POST.addEventListener('click', closePostModal);
+    if(navigator.serviceWorker){
+        const res= await navigator.serviceWorker.register("/sw.js")
+        if(res){
+            console.log("Service Worker registrado correctamente")
+        }else{
+            console.log("Ocurrio un error en el registro del service worker")
+        }
+    }
 });
