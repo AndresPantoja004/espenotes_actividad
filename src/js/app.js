@@ -3,6 +3,7 @@ let MAIN;
 let MODAL_POST;
 let BTN_SHOW_POST;
 let BTN_CANCEL_POST;
+let deferredPrompt
 
 //Funciones
 const showPostModal=()=>{
@@ -22,6 +23,12 @@ const closePostModal=()=>{
 }
 
 
+window.addEventListener("beforeinstallprompt",(e)=>{
+    console.log("Evento de install prevenido")
+    e.preventDefault();
+    deferredPrompt =e;
+})
+
 window.addEventListener("load",async ()=>{
     MAIN = document.querySelector('#main');
     MODAL_POST = document.querySelector('#modal-post-section');
@@ -30,7 +37,7 @@ window.addEventListener("load",async ()=>{
     BTN_CANCEL_POST = document.querySelector('#btn-post-cancel');
     BTN_CANCEL_POST.addEventListener('click', closePostModal);
     if(navigator.serviceWorker){
-        const res= await navigator.serviceWorker.register("../sw.js")
+        const res= await navigator.serviceWorker.register("/sw.js")
         if(res){
             console.log("Service Worker registrado correctamente")
         }else{
@@ -38,3 +45,19 @@ window.addEventListener("load",async ()=>{
         }
     }
 });
+
+window.addEventListener('load', async () =>{
+    const bannerInstall = document.querySelector("#banner-install")
+    bannerInstall.addEventListener('click', async ()=>{
+        if(deferredPrompt){
+            deferredPrompt.prompt();
+            const res = await deferredPrompt.userChoice;
+            if(res.outcome =='accepted'){
+                console.log("Usuario acepto la instalacion del promt")
+            }else{
+                console.log('Rechazo la instalacion')
+            }
+        }
+    })
+})
+
